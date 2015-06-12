@@ -1,0 +1,35 @@
+import pyaudio
+import wave
+import sys
+
+
+## The following is similar to a basic CD quality
+CHUNK = 1024   # This is the sample size
+FORMAT = pyaudio.paInt16    # 16 bit
+CHANNEL = 1    # 1 means mono. If stereo, put 2
+RATE = 44100   # Logitech HD 720p has rate 44800Hz
+
+error_count = 0
+
+pa = pyaudio.PyAudio()
+
+stream = pa.open(format = FORMAT,
+                channel = CHANNEL,
+                rate = RATE,
+                input = True,
+                frames_per_buffer = CHUNK)
+
+print "Listening"
+
+try:
+    block = stream.read(CHUNK)
+except IOError, e:
+    error_count += 1
+    print(" (%d) Error recording: %s" % (errorcount, e))
+
+amplitude
+
+
+stream.stop_stream()
+stream.close()
+pa.terminate()
