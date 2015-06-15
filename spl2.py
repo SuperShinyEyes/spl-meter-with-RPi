@@ -36,11 +36,11 @@ stream = pa.open(format = FORMAT,
 '''
 Variables related to html(gui)
 '''
-html_path = 'file:////Users/young/projects/spl_meter/main.html'
+html_path = 'file:////Users/young/projects/spl_meter/main2.html'
 single_decibel_file_path = '/Users/young/projects/spl_meter/single_decibel.txt'
 
 def is_meaningful(old, new):
-    return abs(old - new) > .5
+    return abs(old - new) > 3
 
 
 def make_sure_path_exists(path):
