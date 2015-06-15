@@ -12,11 +12,13 @@ from selenium import webdriver
    When it is set to 8192 it doesn't.
    IOError happens due to the small CHUNK size
 '''
-CHUNK = 4096  # This is the sample size
+CHUNK = 9600
+#CHUNK = 4096  # This is the sample size
                # math.pow(2, 12) => RATE / CHUNK = 100ms = 0.1 sec
 FORMAT = pyaudio.paInt16    # 16 bit
 CHANNEL = 1    # 1 means mono. If stereo, put 2
-RATE = 44300   # Logitech HD 720p has rate 48000Hz
+#RATE = 44300   # Logitech HD 720p has rate 48000Hz
+RATE = 48000
 
 #error_count = 0
 
