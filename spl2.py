@@ -39,7 +39,8 @@ stream = pa.open(format = FORMAT,
 Variables related to html(gui)
 '''
 html_path = 'file:////Users/young/projects/spl_meter/main2.html'
-single_decibel_file_path = '/Users/young/projects/spl_meter/single_decibel.txt'
+#single_decibel_file_path = '/Users/young/projects/spl_meter/single_decibel.txt'
+single_decibel_file_path = '/home/pi/spl-meter-with-RPi/single_decibel.txt'
 
 def is_meaningful(old, new):
     return abs(old - new) > 3
