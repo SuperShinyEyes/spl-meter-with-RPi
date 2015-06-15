@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Seyoung's SPL meter</title>
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" href="main.css" type="text/css"/>
+    <script>
+    $(document).ready( function() {
+        "use strict";
+
+        var decibel = 0;
+        document.getElementById("decibel").innerHTML=decibel;
+
+    function readTextFile(file){
+
+        var rawFile = new XMLHttpRequest();
+        rawFile.open("GET", file, false);
+        rawFile.onreadystatechange = function ()
+        {   
+
+            if(rawFile.readyState === 4)
+            {
+                
+                if(rawFile.status === 200 || rawFile.status == 0)
+                {
+                    //var allText = rawFile.responseText;
+                    //alert(allText);
+                    decibel = rawFile.responseText;
+                    //$("#decibel").html(decibel);
+                    document.getElementById("decibel").innerHTML=decibel;
+                }
+            }
+        }
+        rawFile.send(null);
+    }
+
+    for(var i = 0; i < 100; i++) {
+        document.getElementById("decibel").innerHTML=i;
+        //readTextFile("file:////Users/young/projects/spl_meter/text.txt");
+        
+    }
+    //document.getElementById("decibel").innerHTML=5;
+    });
+    </script>
+</head>
+
+<body>
+    
+
+    <div><span id="decibel"></span></div>
+</body>
+</html>
+
+
