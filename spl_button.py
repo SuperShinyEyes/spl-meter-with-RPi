@@ -41,6 +41,7 @@ Variables related to html(gui)
 html_path = 'file:////Users/young/projects/spl_meter/main_button.html'
 single_decibel_file_path = '/Users/young/projects/spl_meter/single_decibel.txt'
 #single_decibel_file_path = '/home/pi/spl-meter-with-RPi/single_decibel.txt'
+max_decibel_file_path = '/Users/young/projects/spl_meter/max_decibel.txt'
 
 def is_meaningful(old, new):
     return abs(old - new) > 3
@@ -55,24 +56,36 @@ def make_sure_path_exists(path):
 			raise
 
 
-def update_decibel_text(decibel):
+def update_text(path, content):
     #make_sure_path_exists(single_decibel_file_path)
-    with open(single_decibel_file_path, 'w') as f:
-        f.write("%f" % decibel)
+    ## We are only interested down to second decimal
+    with open(path, 'w') as f:
+        f.write(content)
         
 
 def refresh():
     driver.get(html_path)
 
-def click():
-    driver.find_element_by_id("update").click()
+def click(id):
+    driver.find_element_by_id(id).click()
 
 def open_html(path):
     driver.get(path)
 
+def check_max(new, max):
+    print("check_max called")
+    if new > max:
+        print("max observed")
+        update_text(max_decibel_file_path, 'MAX: {:.2f} dBA'.format(new))
+        click('update_max_decibel')
+        return new    
+    else:
+        return max
+    
+
 print "Listening"
 
-def listen(old=0, error_count=0):
+def listen(old=0, error_count=0, min_decibel=100, max_decibel=0):
     while True:
         try:
             ## read() returns string. You need to decode it into an array later.
@@ -90,9 +103,10 @@ def listen(old=0, error_count=0):
             if is_meaningful(old, new_decibel):
                 old = new_decibel
                 print('A-weighted: {:+.2f} dB'.format(new_decibel))
-                update_decibel_text(new_decibel)
+                update_text(single_decibel_file_path, '{:.2f} dBA'.format(new_decibel))
+                max_decibel = check_max(new_decibel, max_decibel)
                 #refresh()
-                click()
+                click('update_decibel')
 
 
     stream.stop_stream()

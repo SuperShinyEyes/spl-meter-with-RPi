@@ -11,7 +11,7 @@
         var decibel = 0;
         //document.getElementById("decibel").innerHTML=decibel;
 
-    function readTextFile(file){
+    function readTextFile(file, id){
 
         var rawFile = new XMLHttpRequest();
         rawFile.open("GET", file, false);
@@ -26,29 +26,56 @@
                     //var allText = rawFile.responseText;
                     //alert(allText);
                     decibel = rawFile.responseText;
-                    //$("#decibel").html(decibel);
-                    document.getElementById("decibel").innerHTML=decibel;
+                    //$("#" + id).html(decibel);
+                    document.getElementById(id).innerHTML=decibel;
                 }
             }
         }
         rawFile.send(null);
     }
 
-    $("#update").click( function () {
-      readTextFile("file:////Users/young/projects/spl_meter/single_decibel.txt");
-      //readTextFile("file:////home/pi/spl-meter-with-RPi/single_decibel.txt");
+    $("#update_decibel").click( function () {
+      readTextFile("file:////Users/young/projects/spl_meter/single_decibel.txt", "decibel");
+      //readTextFile("file:////home/pi/spl-meter-with-RPi/single_decibel.txt", "decibel");
     
     });
+
+    $("#update_max_decibel").click( function () {
+      readTextFile("file:////Users/young/projects/spl_meter/max_decibel.txt", "max_decibel");
+      //readTextFile("file:////home/pi/spl-meter-with-RPi/single_decibel.txt", "decibel");
+    
+    });
+    
     
     });
     </script>
 
     <style>
+      div {
+      #margin: 0 auto;
+      }
+      
       body {
       background-color: black;
       }
-      span {
+      
+      #decibel {
+      font-size: xx-large;
+      text-align: center;
       color: white;
+      }
+
+      #max_decibel {
+      font-size: x-large;
+      text-align: center;
+      #margin: 0 auto;
+      color: white;
+      }
+
+      button {
+      #background: transparent;
+      #border: none !important;
+      #font-size:0;
       }
     </style>
 </head>
@@ -57,7 +84,10 @@
     
 
   <div><span id="decibel"></span></div>
-  <button id="update"></button>
+  <div><span id="max_decibel"></span></div>
+  <button id="update_decibel">click me</button>
+  <button id="update_max_decibel">max me</button>
+
 </body>
 </html>
 
