@@ -38,7 +38,7 @@ stream = pa.open(format = FORMAT,
 '''
 Variables related to html(gui)
 '''
-html_path = 'file:////Users/young/projects/spl_meter/main2.html'
+html_path = 'file:////Users/young/projects/spl_meter/main_button.html'
 single_decibel_file_path = '/Users/young/projects/spl_meter/single_decibel.txt'
 #single_decibel_file_path = '/home/pi/spl-meter-with-RPi/single_decibel.txt'
 
@@ -63,7 +63,12 @@ def update_decibel_text(decibel):
 
 def refresh():
     driver.get(html_path)
-    
+
+def click():
+    driver.find_element_by_id("update").click()
+
+def open_html(path):
+    driver.get(path)
 
 print "Listening"
 
@@ -86,7 +91,8 @@ def listen(old=0, error_count=0):
                 old = new_decibel
                 print('A-weighted: {:+.2f} dB'.format(new_decibel))
                 update_decibel_text(new_decibel)
-                refresh()
+                #refresh()
+                click()
 
 
     stream.stop_stream()
@@ -97,5 +103,6 @@ def listen(old=0, error_count=0):
 
 if __name__ == '__main__':
     driver = webdriver.Firefox()
+    open_html(html_path)
     listen()
     driver.close()

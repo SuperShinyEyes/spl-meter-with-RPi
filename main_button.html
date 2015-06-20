@@ -34,9 +34,12 @@
         rawFile.send(null);
     }
 
-    readTextFile("file:////Users/young/projects/spl_meter/single_decibel.txt");
-    //readTextFile("file:////home/pi/spl-meter-with-RPi/single_decibel.txt");
-        
+    $("#update").click( function () {
+      readTextFile("file:////Users/young/projects/spl_meter/single_decibel.txt");
+      //readTextFile("file:////home/pi/spl-meter-with-RPi/single_decibel.txt");
+    
+    });
+    
     });
     </script>
 
@@ -53,7 +56,8 @@
 <body>
     
 
-    <div><span id="decibel"></span></div>
+  <div><span id="decibel"></span></div>
+  <button id="update"></button>
 </body>
 </html>
 
