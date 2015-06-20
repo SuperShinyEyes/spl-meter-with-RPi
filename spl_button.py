@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import os, errno
 import pyaudio
 import spl_lib as spl 

@@ -51,40 +51,37 @@
     </script>
 
     <style>
-      div {
-      #margin: 0 auto;
-      }
-      
+            
       body {
       background-color: black;
       }
       
       #decibel {
-      font-size: xx-large;
+      font-size: 6em;
       text-align: center;
       color: white;
       }
 
       #max_decibel {
-      font-size: x-large;
+      font-size: large;
       text-align: center;
-      #margin: 0 auto;
       color: white;
       }
 
+      ## Invisible button. Buttons are just an API for Python and Javascript
       button {
       #background: transparent;
       #border: none !important;
       #font-size:0;
       }
+
     </style>
 </head>
 
 <body>
-    
 
-  <div><span id="decibel"></span></div>
-  <div><span id="max_decibel"></span></div>
+  <div class="parent"><p class="center-text" id="decibel"></p></div>
+  <div><p id="max_decibel"></p></div>
   <button id="update_decibel">click me</button>
   <button id="update_max_decibel">max me</button>
 
