@@ -7,6 +7,7 @@ import numpy
 
 ## For web browser handling
 from selenium import webdriver
+from pyvirtualdisplay import Display
 ''' The following is similar to a basic CD quality
    When CHUNK size is 4096 it routinely throws an IOError.
    When it is set to 8192 it doesn't.
@@ -118,8 +119,10 @@ def listen(old=0, error_count=0, min_decibel=100, max_decibel=0):
 
 
 if __name__ == '__main__':
+    display = Display(visible=0, size=(800, 600))
+    display.start()
     driver = webdriver.Firefox()
     open_html(html_path)
     listen()
     driver.close()
-    
+    display.stop()

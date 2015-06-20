@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import pyaudio
 import wave
 import sys
