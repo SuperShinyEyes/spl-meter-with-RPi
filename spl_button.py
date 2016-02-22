@@ -24,6 +24,8 @@ RATE = 48000
 
 numerator, denominator = spl.A_weighting(RATE)
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 '''
 Listen to mic
 '''
@@ -38,17 +40,18 @@ stream = pa.open(format = FORMAT,
 '''
 Variables related to html(gui)
 '''
-# html_path = 'file:///Users/young/projects/spl_meter/main_button.html'
-html_path = 'file:///home/pi/spl-meter-with-RPi/main_button.html'
+html_path = 'file:///Users/young/projects/spl_meter/html/main_button.html'
+# html_path = os.path.join('file:///', os.path.join(BASE_DIR, 'html/main_button.html'))
 #single_decibel_file_path = '/Users/young/projects/spl_meter/single_decibel.txt'
-single_decibel_file_path = '/home/pi/spl-meter-with-RPi/single_decibel.txt'
+single_decibel_file_path = os.path.join(BASE_DIR, 'single_decibel.txt')
+# single_decibel_file_path = '/home/pi/spl-meter-with-RPi/single_decibel.txt'
 #max_decibel_file_path = '/Users/young/projects/spl_meter/max_decibel.txt'
-max_decibel_file_path = '/home/pi/spl-meter-with-RPi/max_decibel.txt'
+max_decibel_file_path = os.path.join(BASE_DIR, 'max_decibel.txt')
+# max_decibel_file_path = '/home/pi/spl-meter-with-RPi/max_decibel.txt'
 
-
-def get_username():
-    import getpass
-    return getpass.getuser()
+# class SPLMeter(object):
+#
+#     def __init__(self):
 
 
 def is_meaningful(old, new):

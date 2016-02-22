@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os, errno
 import pyaudio
-import spl_lib as spl 
+import spl_lib as spl
 from scipy.signal import lfilter
 import numpy
 
@@ -22,6 +22,7 @@ CHANNEL = 1    # 1 means mono. If stereo, put 2
 RATE = 48000
 
 #error_count = 0
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 numerator, denominator = spl.A_weighting(RATE)
 
@@ -39,12 +40,14 @@ stream = pa.open(format = FORMAT,
 '''
 Variables related to html(gui)
 '''
-#html_path = 'file:///Users/young/projects/spl_meter/main_button.html'
-html_path = 'file:///home/pi/spl-meter-with-RPi/main_button.html'
+# html_path = 'file:///Users/young/projects/spl_meter/html/main_button.html'
+html_path = os.path.join('file:///', os.path.join(BASE_DIR, 'html/main_button.html')[1:])
 #single_decibel_file_path = '/Users/young/projects/spl_meter/single_decibel.txt'
-single_decibel_file_path = '/home/pi/spl-meter-with-RPi/single_decibel.txt'
+single_decibel_file_path = os.path.join(BASE_DIR, 'single_decibel.txt')
+# single_decibel_file_path = '/home/pi/spl-meter-with-RPi/single_decibel.txt'
 #max_decibel_file_path = '/Users/young/projects/spl_meter/max_decibel.txt'
-max_decibel_file_path = '/home/pi/spl-meter-with-RPi/max_decibel.txt'
+max_decibel_file_path = os.path.join(BASE_DIR, 'max_decibel.txt')
+# max_decibel_file_path = '/home/pi/spl-meter-with-RPi/max_decibel.txt'
 
 def is_meaningful(old, new):
     return abs(old - new) > 3
@@ -64,7 +67,7 @@ def update_text(path, content):
     ## We are only interested down to second decimal
     with open(path, 'w') as f:
         f.write(content)
-        
+
 
 def refresh():
     driver.get(html_path)
@@ -81,10 +84,10 @@ def check_max(new, max):
         print("max observed")
         update_text(max_decibel_file_path, 'MAX: {:.2f} dBA'.format(new))
         click('update_max_decibel')
-        return new    
+        return new
     else:
         return max
-    
+
 
 print "Listening"
 
