@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os, errno
 import pyaudio
-import spl_lib as spl 
+import spl_lib as spl
 from scipy.signal import lfilter
 import numpy
 
@@ -38,12 +38,18 @@ stream = pa.open(format = FORMAT,
 '''
 Variables related to html(gui)
 '''
-#html_path = 'file:///Users/young/projects/spl_meter/main_button.html'
+# html_path = 'file:///Users/young/projects/spl_meter/main_button.html'
 html_path = 'file:///home/pi/spl-meter-with-RPi/main_button.html'
 #single_decibel_file_path = '/Users/young/projects/spl_meter/single_decibel.txt'
 single_decibel_file_path = '/home/pi/spl-meter-with-RPi/single_decibel.txt'
 #max_decibel_file_path = '/Users/young/projects/spl_meter/max_decibel.txt'
 max_decibel_file_path = '/home/pi/spl-meter-with-RPi/max_decibel.txt'
+
+
+def get_username():
+    import getpass
+    return getpass.getuser()
+
 
 def is_meaningful(old, new):
     return abs(old - new) > 3
@@ -63,7 +69,7 @@ def update_text(path, content):
     ## We are only interested down to second decimal
     with open(path, 'w') as f:
         f.write(content)
-        
+
 
 def refresh():
     driver.get(html_path)
@@ -80,10 +86,10 @@ def check_max(new, max):
         print("max observed")
         update_text(max_decibel_file_path, 'MAX: {:.2f} dBA'.format(new))
         click('update_max_decibel')
-        return new    
+        return new
     else:
         return max
-    
+
 
 print "Listening"
 
@@ -122,4 +128,3 @@ if __name__ == '__main__':
     open_html(html_path)
     listen()
     driver.close()
-    
