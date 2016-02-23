@@ -81,6 +81,7 @@ def update_max_if_new_is_larger_than_max(new, max):
 
 
 def listen(old=0, error_count=0, min_decibel=100, max_decibel=0):
+    print("Listening")
     while True:
         try:
             ## read() returns string. You need to decode it into an array later.
@@ -112,6 +113,5 @@ def listen(old=0, error_count=0, min_decibel=100, max_decibel=0):
 if __name__ == '__main__':
     driver = webdriver.Firefox()
     open_html(HTML_PATH)
-    print("Listening")
     listen()
     driver.close()
