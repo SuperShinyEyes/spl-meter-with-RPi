@@ -40,19 +40,9 @@ stream = pa.open(format = FORMAT,
 '''
 Variables related to html(gui)
 '''
-# html_path = 'file:///Users/young/projects/spl_meter/html/main_button.html'
 html_path = os.path.join('file:///', os.path.join(BASE_DIR, 'html/main_button.html')[1:])
-#single_decibel_file_path = '/Users/young/projects/spl_meter/single_decibel.txt'
 single_decibel_file_path = os.path.join(BASE_DIR, 'single_decibel.txt')
-# single_decibel_file_path = '/home/pi/spl-meter-with-RPi/single_decibel.txt'
-#max_decibel_file_path = '/Users/young/projects/spl_meter/max_decibel.txt'
 max_decibel_file_path = os.path.join(BASE_DIR, 'max_decibel.txt')
-# max_decibel_file_path = '/home/pi/spl-meter-with-RPi/max_decibel.txt'
-
-# class SPLMeter(object):
-#
-#     def __init__(self):
-
 
 def is_meaningful(old, new):
     return abs(old - new) > 3
