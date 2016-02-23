@@ -82,7 +82,7 @@ def update_max_if_new_is_larger_than_max(new, max):
     print("update_max_if_new_is_larger_than_max called")
     if new > max:
         print("max observed")
-        update_text(MAX_DECIBEL_FILE_PATH, 'get_path dBA'.format(new))
+        update_text(MAX_DECIBEL_FILE_PATH, 'MAX: {:.2f} dBA'.format(new))
         click('update_max_decibel')
         return new
     else:
