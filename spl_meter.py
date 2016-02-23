@@ -35,7 +35,7 @@ def get_path(base, tail, head=''):
     return os.path.join(base, tail) if head == '' else get_path(head, get_path(base, tail)[1:])
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-HTML_PATH = get_path(BASE_DIR, 'html/main_button.html', 'file:///')
+HTML_PATH = get_path(BASE_DIR, 'html/main.html', 'file:///')
 SINGLE_DECIBEL_FILE_PATH = get_path(BASE_DIR, 'decibel_data/single_decibel.txt')
 MAX_DECIBEL_FILE_PATH = get_path(BASE_DIR, 'decibel_data/max_decibel.txt')
 
