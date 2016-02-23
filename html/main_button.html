@@ -11,10 +11,27 @@
         var decibel = 0;
         //document.getElementById("decibel").innerHTML=decibel;
 
-    function readTextFile(file, id){
+    function getCurrentUrl() {
+        return window.location;
+    }
+
+    function getDirPath(pathname) {
+        return pathname.split('/').slice(0,-1).join('/');
+    }
+
+    function getDecibelFileURL(filename) {
+        var url = getCurrentUrl();
+        var protocol = url.protocol;
+        var path = getDirPath(getDirPath(url.pathname));
+        var fileURL = [protocol+"/", path, "decibel_data", filename].join('/');
+        return fileURL;
+    }
+
+    function readTextFile(filename, id){
+        var fileURL = getDecibelFileURL(filename);
 
         var rawFile = new XMLHttpRequest();
-        rawFile.open("GET", file, false);
+        rawFile.open("GET", fileURL, false);
         rawFile.onreadystatechange = function ()
         {
 
@@ -34,24 +51,17 @@
         rawFile.send(null);
     }
 
-    function getFilePath(filename) {
-        var url = window.location;
-        var protocol = url.protocol;
-        var path = url.pathname.split('/').slice(1,-1).join('/') + '/';
-        return  protocol + '///' + path + filename;
-    }
-
     $("#update_decibel").click( function () {
       //readTextFile("file:///Users/young/projects/spl_meter/single_decibel.txt", "decibel");
-      var filePath = getFilePath("single_decibel.txt")
-      readTextFile(filePath, "decibel");
+    //   var fileURL = getDecibelFileURL("single_decibel.txt")
+      readTextFile("single_decibel.txt", "decibel");
 
     });
 
     $("#update_max_decibel").click( function () {
       //readTextFile("file:///Users/young/projects/spl_meter/max_decibel.txt", "max_decibel");
-      var filePath = getFilePath("max_decibel.txt")
-      readTextFile(filePath, "max_decibel");
+    //   var fileURL = getDecibelFileURL("max_decibel.txt")
+      readTextFile("max_decibel.txt", "max_decibel");
     //   readTextFile("file:///home/pi/spl-meter-with-RPi/max_decibel.txt", "max_decibel");
 
     });
