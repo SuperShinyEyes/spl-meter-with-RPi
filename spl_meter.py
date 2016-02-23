@@ -80,9 +80,6 @@ def update_max_if_new_is_larger_than_max(new, max):
         return max
 
 
-print("Listening")
-
-
 def listen(old=0, error_count=0, min_decibel=100, max_decibel=0):
     while True:
         try:
@@ -115,5 +112,6 @@ def listen(old=0, error_count=0, min_decibel=100, max_decibel=0):
 if __name__ == '__main__':
     driver = webdriver.Firefox()
     open_html(HTML_PATH)
+    print("Listening")
     listen()
     driver.close()
