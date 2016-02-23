@@ -1,12 +1,12 @@
+#!/usr/bin/env python
 import os, errno
 import pyaudio
-import spl_lib as spl 
+import spl_lib as spl
 from scipy.signal import lfilter
 import numpy
 
 ## For web browser handling
 from selenium import webdriver
-
 ''' The following is similar to a basic CD quality
    When CHUNK size is 4096 it routinely throws an IOError.
    When it is set to 8192 it doesn't.
@@ -24,6 +24,8 @@ RATE = 48000
 
 numerator, denominator = spl.A_weighting(RATE)
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 '''
 Listen to mic
 '''
@@ -38,9 +40,14 @@ stream = pa.open(format = FORMAT,
 '''
 Variables related to html(gui)
 '''
-html_path = 'file:////Users/young/projects/spl_meter/main2.html'
-single_decibel_file_path = '/Users/young/projects/spl_meter/single_decibel.txt'
-#single_decibel_file_path = '/home/pi/spl-meter-with-RPi/single_decibel.txt'
+
+
+def get_path(base, tail, head=''):
+    return os.path.join(base, tail) if head == '' else get_path(head, get_path(base, tail)[1:])
+
+html_path = os.path.join('file:///', os.path.join(BASE_DIR, 'html/main_button.html')[1:])
+single_decibel_file_path = os.path.join(BASE_DIR, 'decibel_data/single_decibel.txt')
+max_decibel_file_path = os.path.join(BASE_DIR, 'decibel_data/max_decibel.txt')
 
 def is_meaningful(old, new):
     return abs(old - new) > 3
@@ -55,19 +62,36 @@ def make_sure_path_exists(path):
 			raise
 
 
-def update_decibel_text(decibel):
+def update_text(path, content):
     #make_sure_path_exists(single_decibel_file_path)
-    with open(single_decibel_file_path, 'w') as f:
-        f.write("%f" % decibel)
-        
+    ## We are only interested down to second decimal
+    with open(path, 'w') as f:
+        f.write(content)
+
 
 def refresh():
     driver.get(html_path)
-    
+
+def click(id):
+    driver.find_element_by_id(id).click()
+
+def open_html(path):
+    driver.get(path)
+
+def check_max(new, max):
+    print("check_max called")
+    if new > max:
+        print("max observed")
+        update_text(max_decibel_file_path, 'MAX: {:.2f} dBA'.format(new))
+        click('update_max_decibel')
+        return new
+    else:
+        return max
+
 
 print "Listening"
 
-def listen(old=0, error_count=0):
+def listen(old=0, error_count=0, min_decibel=100, max_decibel=0):
     while True:
         try:
             ## read() returns string. You need to decode it into an array later.
@@ -85,8 +109,10 @@ def listen(old=0, error_count=0):
             if is_meaningful(old, new_decibel):
                 old = new_decibel
                 print('A-weighted: {:+.2f} dB'.format(new_decibel))
-                update_decibel_text(new_decibel)
-                refresh()
+                update_text(single_decibel_file_path, '{:.2f} dBA'.format(new_decibel))
+                max_decibel = check_max(new_decibel, max_decibel)
+                #refresh()
+                click('update_decibel')
 
 
     stream.stop_stream()
@@ -97,5 +123,6 @@ def listen(old=0, error_count=0):
 
 if __name__ == '__main__':
     driver = webdriver.Firefox()
+    open_html(html_path)
     listen()
     driver.close()
