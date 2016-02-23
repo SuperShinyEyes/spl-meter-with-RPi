@@ -5,3 +5,4 @@
 *.py#
 .#*
 venv/
+decibel_data/*
