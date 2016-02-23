@@ -16,11 +16,11 @@
         var rawFile = new XMLHttpRequest();
         rawFile.open("GET", file, false);
         rawFile.onreadystatechange = function ()
-        {   
+        {
 
             if(rawFile.readyState === 4)
             {
-                
+
                 if(rawFile.status === 200 || rawFile.status == 0)
                 {
                     //var allText = rawFile.responseText;
@@ -34,28 +34,38 @@
         rawFile.send(null);
     }
 
+    function getFilePath(filename) {
+        var url = window.location;
+        var protocol = url.protocol;
+        var path = url.pathname.split('/').slice(1,-1).join('/') + '/';
+        return  protocol + '///' + path + filename;
+    }
+
     $("#update_decibel").click( function () {
       //readTextFile("file:///Users/young/projects/spl_meter/single_decibel.txt", "decibel");
-      readTextFile("file:///home/pi/spl-meter-with-RPi/single_decibel.txt", "decibel");
-    
+      var filePath = getFilePath("single_decibel.txt")
+      readTextFile(filePath, "decibel");
+
     });
 
     $("#update_max_decibel").click( function () {
       //readTextFile("file:///Users/young/projects/spl_meter/max_decibel.txt", "max_decibel");
-      readTextFile("file:///home/pi/spl-meter-with-RPi/max_decibel.txt", "max_decibel");
-    
+      var filePath = getFilePath("max_decibel.txt")
+      readTextFile(filePath, "max_decibel");
+    //   readTextFile("file:///home/pi/spl-meter-with-RPi/max_decibel.txt", "max_decibel");
+
     });
-    
-    
+
+
     });
     </script>
 
     <style>
-            
+
       body {
       background-color: black;
       }
-      
+
       #decibel {
       font-size: 6em;
       text-align: center;
@@ -87,5 +97,3 @@
 
 </body>
 </html>
-
-
