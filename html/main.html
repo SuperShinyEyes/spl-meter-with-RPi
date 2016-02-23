@@ -9,7 +9,6 @@
         "use strict";
 
         var decibel = 0;
-        //document.getElementById("decibel").innerHTML=decibel;
 
     function getCurrentUrl() {
         return window.location;
@@ -34,16 +33,12 @@
         rawFile.open("GET", fileURL, false);
         rawFile.onreadystatechange = function ()
         {
-
             if(rawFile.readyState === 4)
             {
 
                 if(rawFile.status === 200 || rawFile.status == 0)
                 {
-                    //var allText = rawFile.responseText;
-                    //alert(allText);
                     decibel = rawFile.responseText;
-                    //$("#" + id).html(decibel);
                     document.getElementById(id).innerHTML=decibel;
                 }
             }

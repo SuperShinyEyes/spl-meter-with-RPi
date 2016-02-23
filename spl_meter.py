@@ -7,18 +7,27 @@ import numpy
 
 ## For web browser handling
 from selenium import webdriver
+
+
 ''' The following is similar to a basic CD quality
    When CHUNK size is 4096 it routinely throws an IOError.
    When it is set to 8192 it doesn't.
    IOError happens due to the small CHUNK size
+
+   What is CHUNK? Let's say CHUNK = 4096
+   math.pow(2, 12) => RATE / CHUNK = 100ms = 0.1 sec
 '''
-# CHUNK = 4096  # This is the sample size
-               # math.pow(2, 12) => RATE / CHUNK = 100ms = 0.1 sec
-CHUNK = 9600
+CHUNKS = [4096, 9600]       # Use what you need
+CHUNK = CHUNK[1]
 FORMAT = pyaudio.paInt16    # 16 bit
 CHANNEL = 1    # 1 means mono. If stereo, put 2
-#RATE = 44300   # Logitech HD 720p has rate 48000Hz
-RATE = 48000
+
+'''
+Different mics have different rates.
+For example, Logitech HD 720p has rate 48000Hz
+'''
+RATES = [44300, 48000]
+RATE = RATES[1]
 
 NUMERATOR, DENOMINATOR = spl.A_weighting(RATE)
 
