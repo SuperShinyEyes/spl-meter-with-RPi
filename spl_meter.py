@@ -18,7 +18,7 @@ from selenium import webdriver
    math.pow(2, 12) => RATE / CHUNK = 100ms = 0.1 sec
 '''
 CHUNKS = [4096, 9600]       # Use what you need
-CHUNK = CHUNKs[1]
+CHUNK = CHUNKS[1]
 FORMAT = pyaudio.paInt16    # 16 bit
 CHANNEL = 1    # 1 means mono. If stereo, put 2
 
