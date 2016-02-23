@@ -13,18 +13,23 @@ from selenium import webdriver
    IOError happens due to the small CHUNK size
 '''
 CHUNK = 9600
-#CHUNK = 4096  # This is the sample size
+# CHUNK = 4096  # This is the sample size
                # math.pow(2, 12) => RATE / CHUNK = 100ms = 0.1 sec
 FORMAT = pyaudio.paInt16    # 16 bit
 CHANNEL = 1    # 1 means mono. If stereo, put 2
 #RATE = 44300   # Logitech HD 720p has rate 48000Hz
 RATE = 48000
 
-#error_count = 0
+NUMERATOR, DENOMINATOR = spl.A_weighting(RATE)
 
-numerator, denominator = spl.A_weighting(RATE)
+def get_path(base, tail, head=''):
+    return os.path.join(base, tail) if head == '' else get_path(head, get_path(base, tail)[1:])
+
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+HTML_PATH = get_path(BASE_DIR, 'html/main_button.html', 'file:///')
+SINGLE_DECIBEL_FILE_PATH = get_path(BASE_DIR, 'decibel_data/single_decibel.txt')
+MAX_DECIBEL_FILE_PATH = get_path(BASE_DIR, 'decibel_data/max_decibel.txt')
 
 '''
 Listen to mic
@@ -37,17 +42,6 @@ stream = pa.open(format = FORMAT,
                 input = True,
                 frames_per_buffer = CHUNK)
 
-'''
-Variables related to html(gui)
-'''
-
-
-def get_path(base, tail, head=''):
-    return os.path.join(base, tail) if head == '' else get_path(head, get_path(base, tail)[1:])
-
-html_path = os.path.join('file:///', os.path.join(BASE_DIR, 'html/main_button.html')[1:])
-single_decibel_file_path = os.path.join(BASE_DIR, 'decibel_data/single_decibel.txt')
-max_decibel_file_path = os.path.join(BASE_DIR, 'decibel_data/max_decibel.txt')
 
 def is_meaningful(old, new):
     return abs(old - new) > 3
@@ -57,20 +51,26 @@ def make_sure_path_exists(path):
 	try:
 		os.makedirs(path)
 	except OSError as exception:
-		print "path exists"
+		print("path exists")
 		if exception.errno != errno.EEXIST:
 			raise
 
 
 def update_text(path, content):
-    #make_sure_path_exists(single_decibel_file_path)
-    ## We are only interested down to second decimal
-    with open(path, 'w') as f:
+    # make_sure_path_exists(SINGLE_DECIBEL_FILE_PATH)
+    try:
+        f = open(path, 'w')
+    except IOError as e:
+        print(e)
+    else:
         f.write(content)
+        f.close()
+    # with open(path, 'w') as f:
+    #     f.write(content)
 
 
 def refresh():
-    driver.get(html_path)
+    driver.get(HTML_PATH)
 
 def click(id):
     driver.find_element_by_id(id).click()
@@ -78,18 +78,18 @@ def click(id):
 def open_html(path):
     driver.get(path)
 
-def check_max(new, max):
-    print("check_max called")
+def update_max_if_new_is_larger_than_max(new, max):
+    print("update_max_if_new_is_larger_than_max called")
     if new > max:
         print("max observed")
-        update_text(max_decibel_file_path, 'MAX: {:.2f} dBA'.format(new))
+        update_text(MAX_DECIBEL_FILE_PATH, 'get_path dBA'.format(new))
         click('update_max_decibel')
         return new
     else:
         return max
 
 
-print "Listening"
+print("Listening")
 
 def listen(old=0, error_count=0, min_decibel=100, max_decibel=0):
     while True:
@@ -104,13 +104,13 @@ def listen(old=0, error_count=0, min_decibel=100, max_decibel=0):
             ## If you put Int8 or Int32, the result numbers will be ridiculous
             decoded_block = numpy.fromstring(block, 'Int16')
             ## This is where you apply A-weighted filter
-            y = lfilter(numerator, denominator, decoded_block)
+            y = lfilter(NUMERATOR, DENOMINATOR, decoded_block)
             new_decibel = 20*numpy.log10(spl.rms_flat(y))
             if is_meaningful(old, new_decibel):
                 old = new_decibel
                 print('A-weighted: {:+.2f} dB'.format(new_decibel))
-                update_text(single_decibel_file_path, '{:.2f} dBA'.format(new_decibel))
-                max_decibel = check_max(new_decibel, max_decibel)
+                update_text(SINGLE_DECIBEL_FILE_PATH, '{:.2f} dBA'.format(new_decibel))
+                max_decibel = update_max_if_new_is_larger_than_max(new_decibel, max_decibel)
                 #refresh()
                 click('update_decibel')
 
@@ -123,6 +123,6 @@ def listen(old=0, error_count=0, min_decibel=100, max_decibel=0):
 
 if __name__ == '__main__':
     driver = webdriver.Firefox()
-    open_html(html_path)
+    open_html(HTML_PATH)
     listen()
     driver.close()
