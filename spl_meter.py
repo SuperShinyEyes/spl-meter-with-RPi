@@ -12,9 +12,9 @@ from selenium import webdriver
    When it is set to 8192 it doesn't.
    IOError happens due to the small CHUNK size
 '''
-CHUNK = 9600
 # CHUNK = 4096  # This is the sample size
                # math.pow(2, 12) => RATE / CHUNK = 100ms = 0.1 sec
+CHUNK = 9600
 FORMAT = pyaudio.paInt16    # 16 bit
 CHANNEL = 1    # 1 means mono. If stereo, put 2
 #RATE = 44300   # Logitech HD 720p has rate 48000Hz
@@ -24,7 +24,6 @@ NUMERATOR, DENOMINATOR = spl.A_weighting(RATE)
 
 def get_path(base, tail, head=''):
     return os.path.join(base, tail) if head == '' else get_path(head, get_path(base, tail)[1:])
-
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 HTML_PATH = get_path(BASE_DIR, 'html/main_button.html', 'file:///')
@@ -46,18 +45,7 @@ stream = pa.open(format = FORMAT,
 def is_meaningful(old, new):
     return abs(old - new) > 3
 
-
-def make_sure_path_exists(path):
-	try:
-		os.makedirs(path)
-	except OSError as exception:
-		print("path exists")
-		if exception.errno != errno.EEXIST:
-			raise
-
-
 def update_text(path, content):
-    # make_sure_path_exists(SINGLE_DECIBEL_FILE_PATH)
     try:
         f = open(path, 'w')
     except IOError as e:
@@ -65,12 +53,6 @@ def update_text(path, content):
     else:
         f.write(content)
         f.close()
-    # with open(path, 'w') as f:
-    #     f.write(content)
-
-
-def refresh():
-    driver.get(HTML_PATH)
 
 def click(id):
     driver.find_element_by_id(id).click()
@@ -90,6 +72,7 @@ def update_max_if_new_is_larger_than_max(new, max):
 
 
 print("Listening")
+
 
 def listen(old=0, error_count=0, min_decibel=100, max_decibel=0):
     while True:
@@ -111,7 +94,6 @@ def listen(old=0, error_count=0, min_decibel=100, max_decibel=0):
                 print('A-weighted: {:+.2f} dB'.format(new_decibel))
                 update_text(SINGLE_DECIBEL_FILE_PATH, '{:.2f} dBA'.format(new_decibel))
                 max_decibel = update_max_if_new_is_larger_than_max(new_decibel, max_decibel)
-                #refresh()
                 click('update_decibel')
 
 
