@@ -1,7 +1,0 @@
-EasyProcess
-numpy
-PyAudio
-PyVirtualDisplay
-scipy
-selenium
-wheel
