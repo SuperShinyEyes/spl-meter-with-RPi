@@ -86,7 +86,7 @@ def listen(old=0, error_count=0, min_decibel=100, max_decibel=0):
         try:
             ## read() returns string. You need to decode it into an array later.
             block = stream.read(CHUNK)
-        except IOError, e:
+        except IOError as e:
             error_count += 1
             print(" (%d) Error recording: %s" % (error_count, e))
         else:

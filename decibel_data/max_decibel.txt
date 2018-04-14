@@ -1,1 +1,1 @@
-MAX: 73.17 dBA
+MAX: 48.13 dBA
