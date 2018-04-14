@@ -6,7 +6,7 @@ from scipy.signal import lfilter
 import numpy
 
 ## For web browser handling
-from selenium import webdriver
+#from selenium import webdriver
 
 
 ''' The following is similar to a basic CD quality
