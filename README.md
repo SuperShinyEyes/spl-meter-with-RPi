@@ -1,7 +1,6 @@
 # Raspberry Pi SPL meter
 * Sound Pressur Level meter with RPI implemented with Python.
 * Author: Seyoung Park
-* E-mail: seyoung.arts.park@protonmail.com
 * Date: 2016 Feb. 23rd
 
 ## Demo
@@ -13,6 +12,21 @@
 * Raspberry Pi(1 or 2)
 * Microphone (Webcam)
 
+## Docker
+I made a Docker image for non-gui version.
+```bash
+# Run this command at the project dir
+# Pull the image
+docker pull shinyeyes/rpi-spl-meter:v0.1
+
+# Enter the container
+docker run -it --privileged -v /dev/bus/usb:/dev/bus/usb shinyeyes/rpi-spl-meter:v0.1
+
+# Run this command in the container
+$HOME/miniconda/envs/spl-meter/bin/python spl_meter_text.py
+```
+
+## GUI version
 ### SW
 * Python 2
 * EasyProcess==0.2.2
