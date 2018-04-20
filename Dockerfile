@@ -17,10 +17,10 @@ RUN apt-get update && apt-get install -y \
     rm -rf /var/lib/apt/lists/* 
 
 # Install Python packages
-RUN $HOME/miniconda/bin/conda install --yes --file requirements_conda.txt && \
-    $HOME/miniconda/bin/conda install --yes pip && \
-    $HOME/miniconda/bin/pip install -r requirements_pip.txt
-
-
-WORKDIR /app
-ADD . /app
+#RUN $HOME/miniconda/bin/conda install --yes --file requirements_conda.txt && \
+#    $HOME/miniconda/bin/conda install --yes pip && \
+#    $HOME/miniconda/bin/pip install -r requirements_pip.txt
+#
+#
+#WORKDIR /app
+#ADD . /app
