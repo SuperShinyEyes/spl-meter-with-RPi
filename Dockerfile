@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y \
     libportaudiocpp0 \                
     portaudio19-dev \                 
     python-dev \                      
-    --no-install-recommends gcc \     
+#    --no-install-recommends gcc \     
     wget && \
     wget https://repo.continuum.io/miniconda/Miniconda3-3.16.0-Linux-armv7l.sh -O miniconda.sh && \
     apt-get purge wget && \
