@@ -14,7 +14,6 @@ RUN apt-get update && apt-get install -y \
     bash miniconda.sh -b -p $HOME/miniconda && \ 
     export PATH="$HOME/miniconda/bin:$PATH" && \
     rm miniconda.sh && \
-    $HOME/miniconda/bin/conda install pip && \
     rm -rf /var/lib/apt/lists/* 
 
 # PyAudio dependency
@@ -23,6 +22,7 @@ RUN apt-get install -y \
 
 # Install Python packages
 RUN $HOME/miniconda/bin/conda install --yes --file requirements_conda.txt && \
+    $HOME/miniconda/bin/conda install --yes pip && \
     $HOME/miniconda/bin/pip install -r requirements_pip.txt
 
 
