@@ -1,7 +1,8 @@
 FROM resin/rpi-raspbian:wheezy-20180411
 
 # Install conda for scientific python
-RUN apt-get install -y wget && \
+RUN apt-get update && \
+  apt-get install -y wget && \
   wget https://repo.continuum.io/miniconda/Miniconda3-3.16.0-Linux-armv7l.sh -O miniconda.sh && \
   apt-get purge wget && \
   bash miniconda.sh -b -p $HOME/miniconda && \ 
